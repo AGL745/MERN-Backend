@@ -1,0 +1,26 @@
+{
+  "name": "mern-auth",
+  "version": "1.0.0",
+  "description": "Baseline boilerplate with user authentication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AGL745/mongo-express-react-node.js-authentication.git"
+  },
+  "keywords": [
+    "mongo",
+    "express",
+    "react",
+    "node.js",
+    "JavaScript"
+  ],
+  "author": "Allan Latty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AGL745/mongo-express-react-node.js-authentication/issues"
+  },
+  "homepage": "https://github.com/AGL745/mongo-express-react-node.js-authentication#readme"
+}
