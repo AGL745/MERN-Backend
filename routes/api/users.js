@@ -12,6 +12,10 @@ const validateLoginInput = require("../../validation/login")
 //Load the User model
 const User = require("../../models/User")
 
+
+//ROUTES 
+
+//--Registration
 //@route POST api/users/register
 //@desc Used to register a new user
 //@access Used by public
@@ -53,3 +57,67 @@ router.post("/register", (req, res) => {
         }
     })
 })
+
+
+//--Login
+//@route POST api/users/login
+//@desc Used to login current user
+//@access Used by public
+
+router.post("/login", (req, res) => {
+    
+    //Form Validation 
+    const { errors, isValid} = validateLoginInput(req.body);
+
+    //Check validation
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
+
+    const email = req.body.email
+    
+    const password = req.body.password
+
+    //Find user using email
+    User.findOne({email }).then(user => {
+        //Verify is user exist
+        if(!user) {
+            return res.status(404).json( { emailnotfound: "Email address is not registered."
+        })
+    }
+
+    //Check password
+
+    bcrypt.compare(password, user.password).then(isMatch => {
+        if(isMatch) {
+            //User password matches create JWT Payload
+            const payload = {
+                id: user.id,
+                name: user.name
+            }
+
+            //Sign the token
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {
+                    expiresIn: 31556926 //1 year as seconds
+                },
+                (err, token) => {
+                    res.json( {
+                        success: true,
+                        token: "Bearer " + token
+                    })
+                }
+            )
+        } else {
+            return res
+                .status(400)
+                .json({ passwordincorrect: "Password is incorrect"})
+        }
+    })
+    })
+})
+
+
+module.exports = router
