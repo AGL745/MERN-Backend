@@ -1,7 +1,9 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
+const passport = require("passport")
 
+const users = require("./routes/api/users")
 const app = express()
 
 //Use .env file in config folder
@@ -25,6 +27,14 @@ mongoose.connect(
     .then(() => console.log("MongoDB connected successfully"))
     .catch(err => console.log(err))
 
+//Passport middleware integration
+app.use(passport.initialize())
+
+//Passport configuration
+require("./config/passport")(passport)
+
+//Add routes
+app.use("/api/users", users)
 
 //Assign port number from .env file
 const PORT = process.env.PORT
